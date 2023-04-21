@@ -1,0 +1,107 @@
+docker network create mynetwork
+docker network ls
+docker network inspect mynetwork
+docker network rm mynetwork
+docker network ls
+
+----------------------------------------
+docker network create my-network
+
+docker run --name container1 --network my-network -d wbitt/network-multitool
+docker run --name container2 --network my-network -d wbitt/network-multitool
+
+docker exec -it container1 ping container2
+
+docker stop container1
+docker rm container1
+docker stop container2
+docker rm container2
+docker network rm my-network
+
+--------------------------------------------
+
+docker network create --subnet=10.1.0.0/24 mycustomnet
+docker network inspect mycustomnet
+
+docker run -itd --name mycontainer --network mycustomnet alpine
+docker network inspect mycustomnet
+docker exec mycontainer ifconfig
+
+
+docker stop mycontainer
+docker rm mycontainer
+docker network rm mycustomnet
+
+
+--------------------------------------------
+
+docker network create mysqlnet
+
+docker run -d --name mysql-container --network mysqlnet -e MYSQL_ROOT_PASSWORD=secretpassword mysql
+docker run -d --name phpmyadmin-container --network mysqlnet -e PMA_HOST=mysql-container -p 8080:80 phpmyadmin/phpmyadmin
+
+
+docker stop mysql-container
+docker rm mysql-container
+docker stop phpmyadmin-container
+docker rm phpmyadmin-container
+
+docker network rm mysqlnet
+docker rmi my-app
+
+--------------------------------------------
+
+docker network create my-network
+
+docker run -d --name mysql-container \
+  --network my-network \
+  -e MYSQL_ROOT_PASSWORD=password \ 
+  -v /path/to/local/sql:/docker-entrypoint-initdb.d \
+  mysql:latest \
+  --default-authentication-plugin=mysql_native_password
+
+
+docker run -d --name mysql-container --network my-network -e MYSQL_ROOT_PASSWORD=password -v /path/to/local/sql:/docker-entrypoint-initdb.d mysql:latest --default-authentication-plugin=mysql_native_password
+
+# demo for my local windows
+docker run -d --name mysql-container --network my-network -e MYSQL_ROOT_PASSWORD=password -v C:/Users/lenovo/Documents/Akur/projects/ilmudata/hallo-docker/codes/chapter6/exercise17:/docker-entrypoint-initdb.d mysql:latest --default-authentication-plugin=mysql_native_password
+
+docker logs mysql-container
+
+docker build -t my-app .
+docker run -d -p 3000:3000 --name my-container --network my-network --restart=always  my-app
+docker logs my-container
+
+docker stop mysql-container
+docker rm mysql-container
+docker stop my-container
+docker rm my-container
+
+docker network rm my-network
+
+
+--------------------------------------------
+
+docker network create dhcp-net --subnet=10.1.0.0/24
+
+docker run -d --name dhcp-server --network dhcp-net -v /local/conf:/data --cap-add=NET_ADMIN --restart=always networkboot/dhcpd:latest eth0
+
+# demo for my local windows
+docker run -d --name dhcp-server --network dhcp-net -v C:/Users/lenovo/Documents/Akur/projects/ilmudata/hallo-docker/codes/chapter6/exercise18:/data --cap-add=NET_ADMIN --restart=always networkboot/dhcpd:latest eth0
+
+docker logs dhcp-server
+
+
+docker run -it --name dhcp-client --network dhcp-net --rm alpine
+ip addr show
+ip route show
+exit
+docker run -it --name dhcp-client2 --network dhcp-net --rm alpine
+ip addr show
+ip route show
+exit
+
+docker stop dhcp-server
+docker rm dhcp-server
+
+docker network rm dhcp-net

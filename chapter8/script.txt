@@ -1,0 +1,43 @@
+docker run -d -p 5000:5000 --name registry registry
+
+docker build -t my-image .
+docker tag my-image localhost:5000/my-image
+
+docker push localhost:5000/my-image
+docker pull localhost:5000/my-image
+
+docker stop registry
+docker rm -v registry
+docker image rm my-image localhost:5000/my-image
+
+-----------------------------------
+
+mkdir auth
+
+docker run \
+  --entrypoint htpasswd \
+  httpd:2 -Bbn user1 pass123 > auth/htpasswd
+
+# windows
+mkdir auth
+docker run --rm --entrypoint htpasswd httpd:2 -Bbn user1 pass123 | Set-Content -Encoding ASCII auth/htpasswd  
+
+
+docker run -d -p 5000:5000 --restart=always --name registry -v "$(pwd)"/auth:/auth -e "REGISTRY_AUTH=htpasswd" -e "REGISTRY_AUTH_HTPASSWD_REALM=Docker Registry" -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd registry:2
+
+docker run -d -p 5000:5000 --restart=always --name registry -v C:/hallo/ch8/auth:/auth -e "REGISTRY_AUTH=htpasswd" -e "REGISTRY_AUTH_HTPASSWD_REALM=Docker Registry" -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd registry:2
+
+
+docker ps
+
+docker login localhost:5000
+docker pull nginx
+docker tag nginx localhost:5000/nginx
+docker push localhost:5000/nginx
+
+docker rmi nginx
+docker pull localhost:5000/nginx
+docker images
+
+docker stop registry
+docker rm registry

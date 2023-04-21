@@ -1,0 +1,75 @@
+docker volume create myvolume
+docker volume ls
+docker volume inspect myvolume
+docker volume rm myvolume
+docker volume prune
+
+----------------------------------------
+
+docker volume create mydata
+docker run -d -p 8080:80 --name mynginx -v mydata:/usr/share/nginx/html nginx
+docker inspect mynginx
+
+docker exec -it mynginx bash
+echo "Hello, World!" > /usr/share/nginx/html/index.html
+exit
+
+docker stop mynginx
+docker rm mynginx
+docker volume rm mydata
+
+----------------------------------------
+mkdir ~/dockerdata
+
+# for windows
+mkdir dockerdata
+
+docker run -d --name mycontainer -v ~/dockerdata:/data alpine tail -f /dev/null
+
+# my windows
+docker run -d --name mycontainer -v c:/Temp/dockerdata:/data alpine tail -f /dev/null
+
+docker exec -it mycontainer sh
+echo "This is some data that will be persisted" > /data/myfile.txt
+exit
+
+
+cat ~/dockerdata/myfile.txt
+
+docker stop mycontainer
+docker rm mycontainer
+
+
+------------------------------------------
+
+docker volume create mysql_data
+
+docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=<password> -e MYSQL_DATABASE=<database_name> -v mysql_data:/var/lib/mysql -d mysql:latest
+docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=mydatabase -v mysql_data:/var/lib/mysql -d mysql:latest
+
+docker ps
+
+
+docker exec -it mysql-container mysql -p
+
+USE mydatabase;
+CREATE TABLE example (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(50), PRIMARY KEY (id));
+INSERT INTO example (name) VALUES ('John'), ('Jane'), ('Bob');
+SELECT * FROM example;
+exit
+
+docker stop mysql-container
+docker rm mysql-container
+
+
+docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=<password> -e MYSQL_DATABASE=<database_name> -v mysql_data:/var/lib/mysql -d mysql:latest
+docker run --name mysql-container2 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=mydatabase -v mysql_data:/var/lib/mysql -d mysql:latest
+
+docker exec -it mysql-container2 mysql -p
+
+USE mydatabase;
+SELECT * FROM example;
+exit
+
+docker stop mysql-container2
+docker rm mysql-container2

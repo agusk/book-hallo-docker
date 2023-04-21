@@ -1,0 +1,20 @@
+docker ps -a
+docker run -d -p 8080:80 nginx
+docker ps
+docker stop [CONTAINER ID]
+docker images
+docker rmi nginx
+
+------------------------------
+docker pull nginx
+docker images
+
+-----------------------------
+docker run --name mynginx -p 8080:80 -d nginx
+docker ps
+
+------------------------------
+docker stop mynginx
+docker rm mynginx
+
+

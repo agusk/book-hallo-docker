@@ -1,0 +1,8 @@
+docker run -d --rm -p 8080:80 --name web1 nginx
+docker run -d --rm -p 8081:80 --name web2 nginx
+
+docker stats web1
+docker stats --all
+
+docker stop web1
+docker stop web2

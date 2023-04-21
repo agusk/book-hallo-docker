@@ -1,0 +1,67 @@
+docker build -t mynginx .
+docker images
+
+docker run --name mynginx -p 8080:80 -d mynginx
+docker ps
+
+docker stop mynginx
+docker rm mynginx
+
+-----------------------------------
+
+docker build -t my-php-app .
+docker run -d -p 8080:80 my-php-app
+
+
+-----------------------------------
+
+docker build -t myapp .
+docker images
+docker run --name myapp -p 5000:5000 -d myapp
+docker ps
+
+docker stop myapp
+docker rm myapp
+
+-----------------------------------
+
+docker login --username=yourusername
+docker login
+
+docker tag image-name yourusername/repository-name
+docker tag myfirstcontainer agusk/myfirstcontainer
+
+docker push yourusername/repository-name
+
+
+-------------------------------------
+
+mkdir node-express-docker
+cd node-express-docker
+
+npm init -y
+npm install express
+
+
+node index.js
+
+docker build -t yourusername/node-express-docker .
+docker images
+docker push yourusername/node-express-docker
+
+--------------------------------
+
+docker build -t my-image .
+docker export my-image -o my-image.tar
+docker import my-image.tar my-new-image
+docker save my-image -o my-image.tar
+
+docker load -i my-image.tar
+docker images
+
+
+docker rmi my-image my-new-image
+rm my-image.tar
+
+
+

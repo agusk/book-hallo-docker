@@ -1,0 +1,20 @@
+echo "mysecretpassword" | docker secret create mysecret -
+docker secret ls
+
+docker secret inspect mysecret
+
+docker service create --name myservice --secret mysecret nginx
+docker service ls
+
+docker service ps myservice
+
+docker service rm myservice
+docker secret rm mysecret
+docker service ls
+
+------------------------------------------------
+
+echo "myrootpassword" > db_root_password
+
+docker-compose up
+docker-compose down
