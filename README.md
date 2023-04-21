@@ -9,3 +9,7 @@ The book starts by introducing the basics of Docker and containerization, and th
 Projects covered in the book include creating a web server, building a multi-container application with Docker Compose, and deploying a containerized application to a Docker Swarm.
 
 Overall, "Hallo Docker: Learning Docker Containers by Doing Projects" is a practical guide for anyone who wants to learn Docker by working on real-world projects. The hands-on approach of the book makes it easy for readers to follow along and gain practical experience with Docker containerization.
+
+## Publishing
+
+* Google Play Books: https://play.google.com/store/books/details?id=p8a6EAAAQBAJ
