@@ -13,4 +13,5 @@ Overall, "Hallo Docker: Learning Docker Containers by Doing Projects" is a pract
 ## Publishing
 
 * Google Play Books: https://play.google.com/store/books/details?id=p8a6EAAAQBAJ
-* Lulu: https://www.lulu.com/shop/agus-kurniawan/hallo-docker-learning-docker-containers-by-doing-projects/ebook/product-jkgkwk.html 
+* Lulu: https://www.lulu.com/shop/agus-kurniawan/hallo-docker-learning-docker-containers-by-doing-projects/ebook/product-jkgkwk.html
+* Apple iBookstore: http://books.apple.com/us/book/id6448178566 
